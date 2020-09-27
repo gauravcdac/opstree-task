@@ -1,0 +1,58 @@
+[
+    {
+      "name": "Sprintbootapp",
+      "image": "sprint3hibernate:latest",
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "hostPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "dependsOn": [
+        {
+          "containerName": "mysql",
+          "condition": "HEALTHY"
+        }
+      ]
+    },
+    {
+      "name": "mysql",
+      "image": "mysql:5.6",
+	  "portMappings": [
+        {
+          "containerPort": 3306,
+          "protocol": "tcp"
+        }
+      ]
+      "essential": true,
+      "environment": [
+        {
+          "name": "MYSQL_DATABASE",
+          "value": "employeedb"
+        },
+        {
+          "name": "MYSQL_USER",
+          "value": "root"
+        },
+		{
+          "name": "MYSQL_PASSWORD",
+          "value": "password"
+        },
+		{
+          "name": "MYSQL_ROOT_PASSWORD",
+          "value": "password"
+        }
+      ],
+      "healthCheck": {
+        "command": [
+          "CMD-SHELL",
+          "echo hello"
+        ],
+        "interval": 5,
+        "timeout": 2,
+        "retries": 3
+      }    
+    }
+  ]
